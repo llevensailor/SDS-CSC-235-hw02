@@ -1,0 +1,152 @@
+---
+title: "phase1"
+format: html
+---
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+crimes <- read.csv("tmpdfeo3qy2.csv")
+
+```
+
+
+## Summary Statistics 
+- 2 Quantitative: Lat, Long 
+- 2 Ordinal: Day of Week, Month
+- 2 Categorical: District, Offense Description
+
+```{r}
+print(summary(crimes$Lat))
+print(summary(crimes$Long))
+print(table(crimes$DAY_OF_WEEK))
+print(table(crimes$MONTH))
+print(table(crimes$DISTRICT))
+print(table(crimes$OFFENSE_DESCRIPTION))
+```
+
+  
+## Distribution/Frequency for Each
+```{r}
+#Latitude and Longitude 
+ggplot(crimes, aes(x = Lat)) +
+  geom_histogram(bins = 10) +
+  labs(title = "Distribution of Latitude")
+
+ggplot(crimes, aes(x = Long)) +
+  geom_histogram(bins = 10) +
+  labs(title = "Distribution of Longitude")
+
+```
+
+```{r}
+# Days of the Week and Month 
+crimes$DAY_OF_WEEK <- factor(crimes$DAY_OF_WEEK,
+  levels = c("Monday","Tuesday","Wednesday", "Thursday","Friday","Saturday","Sunday"))
+
+ggplot(crimes, aes(x = DAY_OF_WEEK)) +
+  geom_bar() +
+  labs(title = "Distribution of Crimes Per Day")
+
+crimes$MONTH <- factor(crimes$MONTH, levels = 1:12 )
+ggplot(crimes, aes(x = MONTH)) +
+  geom_bar() +
+  labs(title = "Distribution of Crimes Per Month")
+
+
+```
+
+```{r}
+# District and Offense Description
+ggplot(crimes, aes(x = DISTRICT)) +
+  geom_bar() +
+  labs(title = "Distribution of Crimes Per Disctrict")
+
+
+crimes |>
+  count(OFFENSE_DESCRIPTION, sort = TRUE) |>
+  slice_head(n = 10) |>
+  ggplot(aes(x = OFFENSE_DESCRIPTION, y = n)) + 
+  geom_col() +
+  coord_flip() +
+  labs(title = "Top Ten Crime Types")
+```
+
+## Three Visualizations for relationships
+
+```{r}
+library()
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(sf)
+library(tigris)
+
+options(tigris_use_cache = TRUE)
+
+crimes_noNA <- crimes |>
+  filter(!is.na(Lat), !is.na(Long)) 
+
+boston <- places(state = "MA", cb = TRUE) |>
+  filter(NAME == "Boston")
+
+ggplot() + geom_sf(data = boston,
+          fill = "white",
+          color = "black",
+          linewidth = 0.4) +
+stat_binhex(data = crimes_noNA,
+    aes(x = Long, y = Lat, fill = after_stat(count)),
+    bins = 45,
+    alpha = 0.85) +
+  scale_fill_gradientn(
+    colours = hcl.colors(100, "Reds 3"),
+    name = "Crime Count") +
+  coord_sf(
+    xlim = c(st_bbox(boston)["xmin"], st_bbox(boston)["xmax"]),
+    ylim = c(st_bbox(boston)["ymin"], st_bbox(boston)["ymax"]),
+    expand = FALSE) +
+  labs(
+    title = "Crime concentration in Boston",
+    x = NULL,
+    y = NULL) + 
+  theme_minimal()
+
+```
+```{r}
+crimes$DAY_OF_WEEK <- factor(crimes$DAY_OF_WEEK,
+  levels = c("Monday","Tuesday","Wednesday", "Thursday","Friday","Saturday","Sunday"))
+
+crimes$MONTH <- factor(crimes$MONTH, levels = 1:12 )
+ggplot(crimes, aes(x = MONTH, fill = DAY_OF_WEEK)) +
+  geom_bar() +
+  labs(title = "Distribution of Crimes Per Month", fill = "Days" ) +
+  scale_fill_brewer(palette= "Set1")
+
+
+```
+```{r}
+
+top_10 <- crimes |> 
+  count(OFFENSE_DESCRIPTION, sort = TRUE) |>
+  head(10) |>
+  pull(OFFENSE_DESCRIPTION)
+  
+crimes_top_types <- crimes |>
+  filter(OFFENSE_DESCRIPTION %in% top_10)
+
+ggplot(crimes_top_types, aes(x = DISTRICT, fill = DISTRICT)) +
+  facet_wrap(~OFFENSE_DESCRIPTION) + 
+  geom_bar() +
+  theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) 
+```
+
+##Three testable hypotheses 
+
+Is there a relationship between day of the week the crime is committed and the time of year or type of crime?
+
+Is there a relationship between the district/location and amount of crime?
+
+Is there a relationship between type of crime and district? 
+
