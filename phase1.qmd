@@ -142,9 +142,9 @@ ggplot(crimes_top_types, aes(x = DISTRICT, fill = DISTRICT)) +
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) 
 ```
 
-##Three testable hypotheses 
+## Three testable hypotheses 
 
-Is there a relationship between day of the week the crime is committed and the time of year or type of crime?
+Is there a relationship between day of the week the crime is committed and the time of year?
 
 Is there a relationship between the district/location and amount of crime?
 

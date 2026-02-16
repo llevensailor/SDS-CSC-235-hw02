@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Homework 2</title> 
+</head>
+<body>
+
+    <div>
+        <h1>Exploratory Data Analysis: Boston Crime</h1>
+        <p>I have chosen to complete my EDA on the crime in Boston in the year 2022. The dataset I found gives the type of crime committed, the 
+            date and time of the crime, and the location. There are multiple other variables but those were the ones I focused on the most. 
+        </p>
+    </div>
+
+    <div>
+        <h2 class="highlight-text">Data Synopsis</h2>
+        <p>
+            Souce of Data: 
+            <a href="https://data.boston.gov/dataset/crime-incident-reports-august-2015-to-date-source-new-system/resource/313e56df-6d77-49d2-9c49-ee411f10cf58" target = "_blank"> 2022 Boston Crime</a>
+        </p>
+        <p>
+           The dataset was collected in 2022 by the Boston Police Department. Reports include variables such as location, type of crime, time, and police district. The potential biases 
+           are only reported crimes are in the list, some of the reports have missing values, and each district may have different standards of reporting. 
+        </p>
+    </div>
+   <div>
+        <h2 class="highlight-text">Summary Statistics</h2>
+        <img src= "Tables.png" alt="Summary Tables" width="600">
+        <img src="Tables2.png" alt="Summary Tables" width="600">
+        <img src="Longitude.png" alt="Longitude" width="600">
+        <img src= "Crimes-per-district.png" alt="District Crimes" width="600">
+        <img src = "Latitude.png" alt = "Latitude" width="600">
+        <img src = "Days.png" alt = "Days" width="600">
+        <img src = "Months.png" alt="Months" width="600">
+   </div>
+
+   <div>
+    <h2 class="highlight-text">Visualizations</h2>
+    <p id="vizCaption">
+        This visualization shows the crimes per month color coded by day of the week.
+    </p>
+    <img id="vizImage" src = "Crimes-per-md.png" width="600">
+    <br><br>
+    <button id="nextViz">Next</button>
+
+   </div>
+   <div>
+    <h2 class="highlight-text">Hypotheses</h2>
+    <p>
+        My three testable hypothesese are 1. Is there a relationship between the day of the week the crime is committed and the time of year?
+        2. Is there a relationship between the district and amount of crime?
+        3. Is there a relationship between the district and type of crime committed?
+        The data led me to these questions because of the spots on the map that have an extremely high crime rate. I am also wondering if certain districts have a higher rate of crime because of what is located in that district. For instance will a district with more stores have 
+        higher shoplifting?  
+    </p>
+   </div>
+
+</body>
+</html>
